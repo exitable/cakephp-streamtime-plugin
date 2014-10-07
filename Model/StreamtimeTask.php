@@ -73,4 +73,34 @@ class StreamtimeTask extends StreamtimeAppModel {
 		),
 	);
 
+	public function afterFind($results, $primary = false) {
+		if ($primary) {
+			foreach ($results as &$result) {
+				if (isset($result[$this->alias]['DateStart']) && isset($result[$this->alias]['TimeStart'])) {
+					$date = DateTime::createFromFormat(
+						$this->getDataSource()->columns['date']['format'] . ' ' . $this->getDataSource()->columns['time']['format'],
+						str_replace('-', '/', $result[$this->alias]['DateStart']) . ' ' . $result[$this->alias]['TimeStart'],
+						new DateTimeZone('Europe/Amsterdam')
+					);
+					$date->setTimezone(new DateTimeZone('UTC'));
+					$result[$this->alias]['DateStart'] = $date->format($this->getDataSource()->columns['date']['format']);
+					$result[$this->alias]['TimeStart'] = $date->format($this->getDataSource()->columns['time']['format']);
+				}
+				if (isset($result[$this->alias]['DateDue']) && isset($result[$this->alias]['TimeDue'])) {
+					$date = DateTime::createFromFormat(
+						$this->getDataSource()->columns['date']['format'] . ' ' . $this->getDataSource()->columns['time']['format'],
+						str_replace('-', '/', $result[$this->alias]['DateDue']) . ' ' . $result[$this->alias]['TimeDue'],
+						new DateTimeZone('Europe/Amsterdam')
+					);
+
+					$date->setTimezone(new DateTimeZone('UTC'));
+					$result[$this->alias]['DateDue'] = $date->format($this->getDataSource()->columns['date']['format']);
+					$result[$this->alias]['TimeDue'] = $date->format($this->getDataSource()->columns['time']['format']);
+				}
+			}
+		}
+
+		return $results;
+	}
+
 }

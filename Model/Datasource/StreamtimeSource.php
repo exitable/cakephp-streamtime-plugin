@@ -57,20 +57,6 @@ class StreamtimeSource extends DataSource {
 		$api_secret     = $this->config['app_secret'];
 		$api_url        = 'https://exitable.mystreamtime.com/api/streamtime/1.1/' . $Model->table;
 
-		if (isset($_GET['week'])) {
-			$week = $_GET['week'];
-		} else {
-			$week = date('W');
-		}
-		if (isset($_GET['staff'])) {
-			$staff = $_GET['staff'];
-		} else {
-			$staff = '';
-		}
-
-		$begin = strtotime(date('Y') . 'W' . $week);
-		$end = strtotime(date('Y') . 'W' . $week . '7');
-
 		if (Cache::read($this->__generateCacheKey($Model, $queryData)) === false) {
 			$time_start = microtime(true);
 

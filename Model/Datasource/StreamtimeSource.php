@@ -15,6 +15,7 @@ class StreamtimeSource extends DataSource {
 		'time' => array('name' => 'time', 'format' => 'H:i:s', 'formatter' => 'date'),
 		'date' => array('name' => 'date', 'format' => 'm/d/Y', 'formatter' => 'date'),
 		'binary' => array('name' => 'blob'),
+		'object' => array('name' => 'object'),
 		'boolean' => array('name' => 'tinyint', 'limit' => '1')
 	);
 
